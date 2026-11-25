@@ -1,0 +1,307 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youth Parliament — Modi Institute of Management &amp; Technology</title>
+
+    <!-- Google Fonts: Outfit (Modern Geometric Display) & Plus Jakarta Sans (Clean UI/Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Outfit', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(12px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        popIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.96)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '20%, 60%': { transform: 'translateX(-6px)' },
+                            '40%, 80%': { transform: 'translateX(6px)' },
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pop-in': 'popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'shake': 'shake 0.32s ease-in-out',
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- Modern Civic Summit / Tech Visual Styling -->
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(at 10% 6%, rgba(99, 102, 241, 0.14) 0px, transparent 48%),
+                radial-gradient(at 90% 10%, rgba(14, 165, 233, 0.13) 0px, transparent 46%),
+                radial-gradient(at 50% 96%, rgba(20, 184, 166, 0.11) 0px, transparent 50%),
+                radial-gradient(at 88% 82%, rgba(99, 102, 241, 0.08) 0px, transparent 44%);
+            background-attachment: fixed;
+        }
+
+        /* Subtle Architectural Dot Grid Texture */
+        .bg-dot-grid {
+            background-image: radial-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Frosted Glass Card Surface */
+        .frosted-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        /* Modern Gradient Heading */
+        .heading-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 42%, #3730a3 80%, #0284c7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Clean Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-900 font-sans antialiased selection:bg-indigo-600/15 selection:text-indigo-900 overflow-x-hidden flex flex-col bg-dot-grid">
+
+    <!-- ==================== TOP UTILITY BAR ==================== -->
+    <div class="sticky top-0 z-30 w-full">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-3.5 pb-2 flex items-center justify-between gap-2">
+            <!-- Live Sync Status Pill (with tooltip on error) -->
+            <button id="sync-status-pill" type="button" title="Real-time Firebase connection status"
+                class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50/90 backdrop-blur-md border border-amber-200/90 shadow-sm text-[11px] sm:text-xs font-semibold text-amber-800 transition-all focus:outline-none">
+                <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span id="sync-status-text">Syncing...</span>
+            </button>
+
+            <!-- Right Controls: Sound Toggle, Fullscreen Toggle, Admin Lock -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- Sound Chime Toggle -->
+                <button id="btn-sound-toggle" type="button" title="Toggle Vote Sound Chime" aria-label="Toggle Sound"
+                    class="p-2.5 rounded-xl bg-white/85 hover:bg-white text-slate-600 hover:text-indigo-600 border border-slate-200/90 shadow-sm backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/30">
+                    <!-- Icon injected by JS -->
+                </button>
+
+                <!-- Fullscreen Projector Toggle -->
+                <button id="btn-fullscreen" type="button" title="Toggle Fullscreen Projector View" aria-label="Toggle Fullscreen"
+                    class="p-2.5 rounded-xl bg-white/85 hover:bg-white text-slate-600 hover:text-indigo-600 border border-slate-200/90 shadow-sm backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                </button>
+
+                <!-- Admin Button -->
+                <button id="btn-top-admin" type="button" title="Organizer Admin Access"
+                    class="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-white/85 hover:bg-white text-slate-700 hover:text-indigo-700 border border-slate-200/90 shadow-sm backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/30">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span id="label-top-admin">Admin</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== HELPFUL SYNC ERROR NOTICE (SHOWN ONLY ON PERMISSION / NETWORK ERROR) ==================== -->
+        <div id="sync-error-banner" class="hidden max-w-4xl mx-auto px-3.5 sm:px-6 mt-1.5 animate-pop-in">
+            <div class="rounded-2xl bg-rose-50/95 backdrop-blur-md border border-rose-200 px-4 py-2.5 text-xs sm:text-sm text-rose-800 flex items-center justify-between gap-3 shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span id="sync-error-banner-text">Sync error detected.</span>
+                </div>
+                <button id="btn-retry-sync" type="button"
+                    class="shrink-0 px-3 py-1 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-colors">
+                    Retry
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== FLOATING ADMIN TOOLBAR (VISIBLE ONLY WHEN UNLOCKED) ==================== -->
+        <div id="admin-control-bar" class="hidden max-w-6xl mx-auto px-3.5 sm:px-6 mt-1.5 animate-pop-in">
+            <div class="rounded-2xl bg-slate-900/95 backdrop-blur-xl text-white border border-slate-700/80 shadow-xl shadow-slate-900/20 px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2 pl-1">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                    <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-indigo-300">Admin Mode</span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <button id="btn-bar-edit" type="button"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-white transition-all">
+                        <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit Poll
+                    </button>
+
+                    <button id="btn-bar-results" type="button"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-500 hover:bg-indigo-400 text-white shadow-sm shadow-indigo-500/30 transition-all">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span id="btn-bar-results-label">Show Results</span>
+                    </button>
+
+                    <button id="btn-bar-controls" type="button"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-white transition-all">
+                        <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                        Poll Controls
+                    </button>
+
+                    <button id="btn-bar-sync" type="button"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-400/25 transition-all">
+                        <svg class="w-3.5 h-3.5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
+                        Live Sync &amp; Share
+                    </button>
+
+                    <button id="btn-bar-security" type="button"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-white transition-all">
+                        <svg class="w-3.5 h-3.5 text-sky-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
+                        Security
+                    </button>
+
+                    <button id="btn-bar-lock" type="button"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/30 transition-all">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Lock Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN STAGE CONTAINER ==================== -->
+    <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 sm:pb-14 flex flex-col justify-center">
+
+        <!-- ================================================================ -->
+        <!-- EXACT HEADER HIERARCHY                                           -->
+        <!-- ================================================================ -->
+        <header class="text-center mb-6 sm:mb-8 animate-fade-up">
+            <!-- 1. Institute Name (Small crisp uppercase tracked text) -->
+            <p id="header-institute"
+                class="text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.22em] text-slate-500 mb-2 px-2">
+                Modi Institute of Management &amp; Technology
+            </p>
+
+            <!-- 2. Main Heading (Large bold modern gradient heading) -->
+            <h1 id="header-heading"
+                class="font-display heading-gradient text-4xl sm:text-6xl lg:text-[4.35rem] font-extrabold tracking-tight leading-[1.08] pb-1">
+                Youth Parliament
+            </h1>
+
+            <!-- 3. Subtitle Pill Badge -->
+            <div class="mt-3 flex justify-center">
+                <span id="header-subtitle-pill"
+                    class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-indigo-700 bg-indigo-50/95 border border-indigo-200/80 shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                    <span id="header-subtitle">Presented by Debate Club</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- ================================================================ -->
+        <!-- VIEW 1: LIVE VOTING SCREEN                                       -->
+        <!-- ================================================================ -->
+        <section id="view-vote" class="space-y-5 sm:space-y-7 animate-fade-up">
+
+            <!-- MAIN DEBATE TOPIC CARD -->
+            <div class="relative frosted-card rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-200/60 px-5 py-6 sm:px-10 sm:py-8 text-center overflow-hidden">
+                <div class="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 via-sky-500 to-teal-400"></div>
+
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold uppercase tracking-widest mb-3">
+                    Debate Motion
+                </div>
+
+                <h2 id="vote-topic-display"
+                    class="font-display text-xl sm:text-3xl lg:text-[2.15rem] font-bold text-slate-900 leading-snug tracking-tight max-w-4xl mx-auto">
+                    Should Artificial Intelligence be strictly regulated by global parliamentary law?
+                </h2>
+
+                <!-- Optional Total Votes Cast Counter (Toggled by Admin; individual counts stay hidden) -->
+                <div id="vote-total-wrapper" class="mt-4 sm:mt-5 flex justify-center">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 bg-slate-100/90 border border-slate-200/80">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Total Votes Cast: <strong id="vote-total-count" class="text-slate-900 font-bold">0</strong>
+                    </span>
+                </div>
+            </div>
+
+            <!-- PERSISTENT "VOTE RECORDED SUCCESSFULLY" CONFIRMATION BANNER -->
+            <div id="vote-locked-banner" class="hidden rounded-3xl bg-emerald-50/95 backdrop-blur-md border border-emerald-200 shadow-lg shadow-emerald-100/70 px-5 py-5 sm:px-8 sm:py-6 animate-pop-in">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                    <div class="flex flex-col sm:flex-row items-center gap-3.5 sm:gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/25 shrink-0">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-xl sm:text-2xl font-bold text-emerald-950">Vote Recorded Successfully</h3>
+                            <p class="text-xs sm:text-sm text-emerald-800/90 mt-0.5">
+                                Your vote has been safely submitted for this round. Only one vote is allowed per participant.
+                            </p>
+                            <p id="vote-locked-choice-text"
+                                class="inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full text-xs font-bold text-emerald-800 bg-white/90 border border-emerald-200"></p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-emerald-700 bg-white border border-emerald-200 shadow-sm shrink-0">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Vote Locked
+                    </span>
+                </div>
+            </div>
+
+            <!-- 3 COLOR-CODED VOTING OPTION CARDS (A, B, C) -->
+            <div id="vote-cards-grid" role="radiogroup" aria-label="Debate Voting Options"
+                class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                <!-- Dynamically injected by JS -->
+            </div>
+
+            <!-- PRIMARY CTA: CONFIRM & SUBMIT VOTE -->
+            <div id="vote-
